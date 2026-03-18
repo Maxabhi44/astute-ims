@@ -4,9 +4,7 @@ import { useRouter } from 'next/router'
 import { supabase } from '../lib/supabase'
 import Layout from '../components/Layout'
 import StatsGrid from '../components/StatsGrid'
-import RecentClaims from '../components/RecentClaims'
-import ActivityFeed from '../components/ActivityFeed'
-import QuickActions from '../components/QuickActions'
+import RecentClaims, { ActivityFeed, QuickActions } from '../components/RecentClaims'
 
 export default function Dashboard() {
   const router = useRouter()

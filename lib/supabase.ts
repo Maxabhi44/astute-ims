@@ -1,13 +1,20 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// New Supabase industry standard key format
+// NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = sb_publishable_xxx (safe for frontend)
+// SUPABASE_SECRET_KEY = sb_secret_xxx (only server-side, never expose)
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+
+if (!supabaseUrl || !supabasePublishableKey) {
+  throw new Error(
+    'Missing Supabase environment variables. Check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY'
+  )
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// Frontend client — uses Publishable key (safe to expose)
+export const supabase = createClient(supabaseUrl, supabasePublishableKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
@@ -15,11 +22,11 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 })
 
-// Server-side admin client (never expose to frontend)
+// Server-only admin client — uses Secret key (NEVER expose to frontend)
 export const supabaseAdmin = () => {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!serviceKey) throw new Error('Missing service role key')
-  return createClient(supabaseUrl, serviceKey, {
+  const secretKey = process.env.SUPABASE_SECRET_KEY
+  if (!secretKey) throw new Error('Missing SUPABASE_SECRET_KEY — server-side only!')
+  return createClient(supabaseUrl, secretKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   })
 }
