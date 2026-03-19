@@ -77,7 +77,7 @@ export default function FollowupsPage() {
                 padding:'10px 18px', fontSize:13, fontWeight: tab===key ? 600 : 400,
                 color: tab===key ? '#3b5bdb' : '#6b7280',
                 borderBottom: tab===key ? '2px solid #3b5bdb' : '2px solid transparent',
-                background:'none', border:'none', borderBottom: tab===key ? '2px solid #3b5bdb' : '2px solid transparent',
+                background:'none', border:'none',
                 cursor:'pointer', marginBottom:-1
               }}>{label} <span style={{ marginLeft:6, background: tab===key?'#e0e7ff':'#f3f4f6', color: tab===key?'#3b5bdb':'#9ca3af', padding:'1px 7px', borderRadius:20, fontSize:11, fontWeight:600 }}>{count}</span></button>
             ))}
